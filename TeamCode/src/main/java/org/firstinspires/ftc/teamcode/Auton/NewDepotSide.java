@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc;
+package org.firstinspires.ftc.Auton;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -37,7 +37,7 @@ import org.firstinspires.ftc.CustomGoldDetector;
 import org.firstinspires.ftc.teamcode.dependencies.Robot;
 
 
-@Autonomous(name = "New Depot Side", group = "Auton")
+@Autonomous(name = "Comp Depot Side", group = "Auton")
 public class NewDepotSide extends LinearOpMode {
 
     Robot r = new Robot(this);
@@ -74,58 +74,54 @@ public class NewDepotSide extends LinearOpMode {
 
         waitForStart();
 
+        while(opModeIsActive()){
+            r.armMotors[0].setPower(-0.25);
+
+            sleep(100);
+            r.servoMotors[1].setPosition(0.35);
+            sleep(100);
+
+            r.positionDrive(2, -40, 0.4);
+            sleep(100);
 
 
+            //r.positionDrive(0,840,0.3 );
+
+            r.armMotors[0].setPower(0.5);
+            while(!isStopRequested() && r.armMotors[0].getCurrentPosition() <= 820) {}
+            r.armMotors[0].setPower(0);
 
 
+            sleep(100);
+            telemetry.addData("robot:", "lowered");
+            telemetry.update();
 
-        r.armMotors[0].setPower(-0.25);
-
-        sleep(100);
-        r.servoMotors[1].setPosition(0.35);
-        sleep(100);
-
-        r.positionDrive(2, -40, 0.2);
-        sleep(100);
-
-
-        //r.positionDrive(0,840,0.3 );
-
-        r.armMotors[0].setPower(0.5);
-        while(!isStopRequested() && r.armMotors[0].getCurrentPosition() <= 820) {}
-        r.armMotors[0].setPower(0);
+            //28 inches to go forward to center
+            //26.5 inches to center mineral for angle measuring
+            //31.5/2 inches from mineral
+            //30.7 degrees to mineral
+            //36 inches from mineral to depot
+            //for left mineral turn 30.7 degrees ccw and move 30.8 inches then 66.4 degrees cw and move 39.3 inches
+            //for right mineral turn 30.7 degreescw and move 30.8 inches then 66.4 degrees ccw and move 39.3 inches
+            //for center mineral go straight 62.5 inches
+            // and then move 45 degrees ccw and move 72 inches for crater
 
 
-        sleep(100);
-        telemetry.addData("robot:", "lowered");
-        telemetry.update();
-
-        //28 inches to go forward to center
-        //26.5 inches to center mineral for angle measuring
-        //31.5/2 inches from mineral
-        //30.7 degrees to mineral
-        //36 inches from mineral to depot
-        //for left mineral turn 30.7 degrees ccw and move 30.8 inches then 66.4 degrees cw and move 39.3 inches
-        //for right mineral turn 30.7 degreescw and move 30.8 inches then 66.4 degrees ccw and move 39.3 inches
-        //for center mineral go straight 62.5 inches
-        // and then move 45 degrees ccw and move 72 inches for crater
-
-
-        //for left mineral
+            //for left mineral
 //        r.rotate("ccw",45, 0.05);
 //        r.positionDrive(0,-800,0.5);
 //        r.rotate("cw",0.05,0);
-        //18-19 or 11.6 degrees cw to rotate out of the hook
-        //drive 2 inches forward
-        //8 or 10 inches forward
-        //rotate 31 ccw degrees or 41
-        //28.5 inches forward
-        //rotate 21 degrees cw
-        //34 inches forward
-        r.rotate("cw",0.1,18);
-        //TODO translate 4
-        r.translate(4,-0.15);
-        r.rotate("ccw",0.1,0);
+            //18-19 or 11.6 degrees cw to rotate out of the hook
+            //drive 2 inches forward
+            //8 or 10 inches forward
+            //rotate 31 ccw degrees or 41
+            //28.5 inches forward
+            //rotate 21 degrees cw
+            //34 inches forward
+            r.rotate("cw",0.2,18);
+            //TODO translate 4
+            r.translate(4,-0.3);
+            r.rotate("ccw",0.2,0);
 //        r.rotate("ccw",0.05,31);
 //        r.translate(28.5,-0.05);
 //        r.rotate("cw",0.05,20);
@@ -150,7 +146,7 @@ public class NewDepotSide extends LinearOpMode {
 //        r.servoMotors[0].setPosition(0);
 
 
-        //TODO check if last motor hits pos or first motor hits position
+            //TODO check if last motor hits pos or first motor hits position
 
 
 
@@ -170,63 +166,81 @@ public class NewDepotSide extends LinearOpMode {
 
 
 
-        if ((detector.getScreenPosition().x < 400 && detector.getScreenPosition().x > 150) && detector.getScreenPosition().y >= 200) {
-            telemetry.addData("Position:", "Center");
+//        if ((detector.getScreenPosition().x < 400 && detector.getScreenPosition().x > 150) && detector.getScreenPosition().y >= 200) {
+//            telemetry.addData("Position:", "Center");
+//            telemetry.update();
+//            //make this less before running
+//
+//            //TODO yesterday it was 56, i changed to 54, need to test
+//            r.translate(54, -0.15);
+//
+//
+//
+//        }
+//        else {
+//            r.translate(4,-0.15);
+//            r.rotate("ccw", 0.15, 35);
+//            telemetry.addData("xpos", detector.getScreenPosition().x);
+//            double currentXPos = detector.getScreenPosition().x;
+//            double currentYPos = detector.getScreenPosition().y;
+//            telemetry.update();
+//            sleep(1000);
+//            if ((currentXPos < 450 && currentXPos > 200) && currentYPos >= 200){
+//                r.translate(30.8, -0.15);
+//                r.rotate("cw",0.1,33);
+//                r.translate(33.3,-0.15);
+//
+//            }
+//            else{
+//                r.rotate("cw", 0.1, 35);
+//                r.translate(30.8, -0.15);
+//                r.rotate("ccw",0.05,32);
+//                r.translate(33.3,-0.15);
+//
+//
+//            }
+//
+//        }
+            r.translate(4,-0.3);
+            r.rotate("cw", 0.1, 35);
+            r.translate(30.8, -0.3);
+            r.rotate("ccw",0.1,32);
+            r.translate(33.3,-0.3);
+
+
+
+
+            //placeholder for dropping the team marker
+            sleep(100);
+            r.positionDrive(2, -220, 0.2);
+            sleep(500);
+            r.positionDrive(2, 220, 0.2);
+            sleep(100);
+            r.rotate("cw",0.1,45.5);
+            r.strafe(4,0.3);
+            r.strafe(-1,0.3);
+            r.translate(70,0.4);
+
+
+            //.addData("xpos",detector.getScreenPosition().x);
+
+
+
             telemetry.update();
-            //make this less before running
-
-            //TODO yesterday it was 56, i changed to 54, need to test
-            r.translate(54, -0.15);
 
 
-
-        }
-        else {
-            r.translate(4,-0.15);
-            r.rotate("ccw", 0.15, 35);
-            telemetry.addData("xpos", detector.getScreenPosition().x);
-            double currentXPos = detector.getScreenPosition().x;
-            double currentYPos = detector.getScreenPosition().y;
-            telemetry.update();
-            sleep(1000);
-            if ((currentXPos < 450 && currentXPos > 200) && currentYPos >= 200){
-                r.translate(30.8, -0.15);
-                r.rotate("cw",0.1,33);
-                r.translate(33.3,-0.15);
-
-            }
-            else{
-                r.rotate("cw", 0.1, 35);
-                r.translate(30.8, -0.15);
-                r.rotate("ccw",0.05,32);
-                r.translate(33.3,-0.15);
+            detector.disable();
 
 
-            }
-
+            break;
         }
 
 
 
 
-        //placeholder for dropping the team marker
-        sleep(100);
-        r.positionDrive(2, -220, 0.2);
-        sleep(500);
-        r.positionDrive(2, 220, 0.2);
-        sleep(100);
-        r.rotate("cw",0.1,45.5);
-        r.translate(75,0.2);
 
 
-        //.addData("xpos",detector.getScreenPosition().x);
-
-
-
-        telemetry.update();
-
-
-        detector.disable();
+        ;
 
 
 

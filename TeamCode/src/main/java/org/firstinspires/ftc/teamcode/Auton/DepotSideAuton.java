@@ -1,6 +1,7 @@
-package org.firstinspires.ftc;
+package org.firstinspires.ftc.Auton;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.dependencies.Robot;
 
 
 @Autonomous(name = "Depot Side", group = "Auton")
+@Disabled
 public class DepotSideAuton extends LinearOpMode {
 
     Robot r = new Robot(this);

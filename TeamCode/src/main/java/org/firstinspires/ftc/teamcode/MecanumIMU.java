@@ -73,7 +73,7 @@ public class MecanumIMU extends LinearOpMode {
 
     boolean runSlow = false, runFast = false;
 
-    double powIntakeMax, powIntakeMin;
+
     
     // do tuning of lt/rt & see if counts can change
 
@@ -91,9 +91,19 @@ public class MecanumIMU extends LinearOpMode {
             {-1,-0.75,-0.5,-0.6},
             {1,0.75,0.5,1}
     };
+    double powL = 0, powR = 0;
+
+    double powIntake = 0, powIntakeMax = 0.5, powIntakeMin = -0.5;
+
+    double powLift = 0, powLiftMax = 1, powLiftMin = -1;
+
+    double powRotate = 0, powRotateOutwards = 0.5, powRotateTowardsRobot = -0.5;
+
+
+    double powTelescope = 0;
 
     double intakepower = 0;
-
+    int LIM = -300;
     double servoPosition;
 
     double fwd, strafe, rotate;
@@ -129,8 +139,7 @@ public class MecanumIMU extends LinearOpMode {
 
             if(gamepad1.y) {
                 driveMode = DriveMode.CARTESIAN;
-            }
-            else if (gamepad1.a) {
+            } else if (gamepad1.a) {
                 driveMode = DriveMode.FIELD;
             }
 
@@ -138,12 +147,10 @@ public class MecanumIMU extends LinearOpMode {
                 //todo figure out reset angle
                 r.imuInit();
             }
-            
+
             armMotors();
 
             telemetry.addData("Mode", driveMode.toString());
-
-
 
             setPowers();
 
@@ -162,49 +169,81 @@ public class MecanumIMU extends LinearOpMode {
     
     //TODO auto buttons
     //TODO make this function able to take in an object of 3 different vals (dcmotor, upper, lower) and does this exact thing : )
-    private void raise() {
-        boundedMotor(gamepad2.dpad_up, gamepad2.dpad_down, RAISE.getIndex(), 0,-730);
+    private void intake() {
+        if(gamepad2.right_trigger > TRIGGER_DEADZONE)
+            powIntake = powIntakeMax;
+        else if (gamepad2.left_trigger > TRIGGER_DEADZONE)
+            powIntake = powIntakeMin;
+        else
+            powIntake = 0;
     }
 
-    private void telescope() {
-        boundedMotor(gamepad2.right_bumper, gamepad2.left_bumper, TELESCOPE.getIndex(), 0, -879);
+    private void raise() {
+        if(gamepad2.dpad_up)
+            powLift = powLiftMax;
+        else if (gamepad2.dpad_down)
+            powLift = powLiftMin;
+        else
+            powLift = 0;
     }
 
     private void rotate() {
-        boundedMotor(gamepad2.b, gamepad2.x, ROTATE.getIndex(), 0, -431);
+        if(gamepad2.b) {
+            if(r.armMotors[2].getCurrentPosition() <= LIM) {
+                powRotate = powRotateTowardsRobot/2;
+                telemetry.addData("Rot", "in, past lim");
+            }
+            else {
+                powRotate = powRotateTowardsRobot*2;
+            }
+        }
+        else if(gamepad2.x) {
+            if(r.armMotors[2].getCurrentPosition() >= LIM) {
+                powRotate = powRotateOutwards/2;
+                telemetry.addData("Rot", "out, past lim");
+            }
+            else {
+                powRotate = powRotateOutwards*2;
+            }
+        }
+        else {
+            powRotate = 0;
+        }
+
+
+        telemetry.addData("Powrot", powRotate);
     }
 
-    private void intake() {
-        telemetry.addData("RT:", gamepad2.right_trigger);
-        telemetry.addData("LT:", gamepad2.left_trigger);
-        if(gamepad2.right_trigger > TRIGGER_DEADZONE) {
-            telemetry.addData("intake:", "inwards");
-            telemetry.update();
-            //intakepower = -0.5;
-            armMotorPows[0][INTAKE.getIndex()] = armMotorPows[2][INTAKE.getIndex()];
-        } else if(gamepad2.left_trigger > TRIGGER_DEADZONE) {
-            armMotorPows[0][INTAKE.getIndex()] = armMotorPows[1][INTAKE.getIndex()];
-            telemetry.addData("intake:", "outwards");
-            telemetry.update();
-            //intakepower = 0.5;
-        } else if(gamepad2.right_trigger < TRIGGER_DEADZONE && gamepad2.left_trigger < TRIGGER_DEADZONE) {
-            armMotorPows[0][INTAKE.getIndex()] = 0;
-            //intakepower = 0;
+    private void telescope() {
+        if(gamepad2.left_bumper) {
+            if(r.armMotors[1].getCurrentPosition() <=20) {
+                powTelescope = 0;
+                telemetry.addData("Err", "Horizontal pulled!");
+            }
+            powTelescope = 0.5;
+        }
+        else if(gamepad2.right_bumper) {
+            powTelescope= -0.5;
+
+        }
+        else {
+            powTelescope = 0;
         }
     }
 
+
     //make each motor enum'd with two parts; the motor and an identifier, so we can reference the correct
     //TODO make telem for bounds
-    private void boundedMotor(boolean out, boolean in, int motorNum, double upperBound, double lowerBound) {
-        if(out
-                && r.armMotors[motorNum].getCurrentPosition() < upperBound)
-            armMotorPows[0][motorNum] = armMotorPows[2][motorNum];
-        else if (in
-                && r.armMotors[motorNum].getCurrentPosition() > lowerBound)
-            armMotorPows[0][motorNum] = armMotorPows[1][motorNum];
-        else
-            armMotorPows[0][motorNum] = 0;
-    }
+//    private void boundedMotor(boolean out, boolean in, int motorNum, double upperBound, double lowerBound) {
+//        if(out
+//                && r.armMotors[motorNum].getCurrentPosition() < upperBound)
+//            armMotorPows[0][motorNum] = armMotorPows[2][motorNum];
+//        else if (in
+//                && r.armMotors[motorNum].getCurrentPosition() > lowerBound)
+//            armMotorPows[0][motorNum] = armMotorPows[1][motorNum];
+//        else
+//            armMotorPows[0][motorNum] = 0;
+//    }
 
     private void mecanum() {
         if(driveMode == DriveMode.FIELD) {
