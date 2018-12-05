@@ -27,13 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.Auton;
+package org.firstinspires.ftc.teamcode.Auton;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.CustomGoldDetector;
+import org.firstinspires.ftc.teamcode.CustomGoldDetector;
 import org.firstinspires.ftc.teamcode.dependencies.Robot;
 
 

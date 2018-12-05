@@ -27,21 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.dependencies.Enums;
 import org.firstinspires.ftc.teamcode.dependencies.Enums.*;
 import org.firstinspires.ftc.teamcode.dependencies.Robot;
-
-import static org.firstinspires.ftc.teamcode.dependencies.Enums.ArmMotor.INTAKE;
-import static org.firstinspires.ftc.teamcode.dependencies.Enums.ArmMotor.RAISE;
-import static org.firstinspires.ftc.teamcode.dependencies.Enums.ArmMotor.ROTATE;
-import static org.firstinspires.ftc.teamcode.dependencies.Enums.ArmMotor.TELESCOPE;
 
 
 /**

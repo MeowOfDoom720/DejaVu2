@@ -19,8 +19,6 @@ import java.util.List;
 import static org.firstinspires.ftc.robotcore.external.tfod.TfodRoverRuckus.LABEL_GOLD_MINERAL;
 import static org.firstinspires.ftc.robotcore.external.tfod.TfodRoverRuckus.LABEL_SILVER_MINERAL;
 import static org.firstinspires.ftc.robotcore.external.tfod.TfodRoverRuckus.TFOD_MODEL_ASSET;
-import static org.firstinspires.ftc.teamcode.dependencies.Constants.*;
-import static org.firstinspires.ftc.teamcode.dependencies.ConfigurationNames.*;
 import static org.firstinspires.ftc.teamcode.dependencies.Enums.*;
 
 /**
@@ -115,7 +113,7 @@ public class Robot {
     public void cvInit() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = VUFKEY;
+        parameters.vuforiaLicenseKey = Constants.VUFKEY;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         //  Instantiate the Vuforia engine
@@ -188,19 +186,19 @@ public class Robot {
 
     private void servoMotorsInit(){
         for(int i = 0; i<2 && !caller.isStopRequested(); i++){
-            servoMotors[i] = hardwareMap.servo.get(SERVO_MOTOR_NAMES[i]);
+            servoMotors[i] = hardwareMap.servo.get(ConfigurationNames.SERVO_MOTOR_NAMES[i]);
         }
 
         if(callerType == OpModeType.AUTON && !caller.isStopRequested()) {
-            servoMotors[0].setPosition(MARKER_HELD);
-            servoMotors[1].setPosition(SERVO_LOCKED);
+            servoMotors[0].setPosition(Constants.MARKER_HELD);
+            servoMotors[1].setPosition(Constants.SERVO_LOCKED);
         }
             //no need to change servos for teleop
 
     }
     private void driveMotorsInit() {
         for (int i = 0; i<4 && !caller.isStopRequested(); i++) {
-            driveMotors[i] = hardwareMap.dcMotor.get(DRIVE_MOTOR_NAMES[i]);
+            driveMotors[i] = hardwareMap.dcMotor.get(ConfigurationNames.DRIVE_MOTOR_NAMES[i]);
 
             //TODO standardize between robot and code the port numbers and i
             /*
@@ -228,7 +226,7 @@ public class Robot {
     }
     private void armMotorsInit() {
         for (int i = 0; i<4 && !caller.isStopRequested(); i++) {
-            armMotors[i] = hardwareMap.dcMotor.get(ARM_MOTOR_NAMES[i]);
+            armMotors[i] = hardwareMap.dcMotor.get(ConfigurationNames.ARM_MOTOR_NAMES[i]);
 
             //TODO change if needed: well, i did it, but must be changed for when telescoping works
             /*
@@ -258,7 +256,7 @@ public class Robot {
         }
     }
     public void imuInit() {
-        imu = hardwareMap.get(BNO055IMU.class, SENSOR_NAMES[0]);
+        imu = hardwareMap.get(BNO055IMU.class, ConfigurationNames.SENSOR_NAMES[0]);
         gyroParameters = new BNO055IMU.Parameters();
         gyroParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         gyroParameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
@@ -351,7 +349,7 @@ public class Robot {
 //        else
 //            localizedInches =  -inches + adjustmentFortranslation;
 //
-        driveMtrTarget = (int) (localizedInches * HD_COUNTS_PER_INCH);
+        driveMtrTarget = (int) (localizedInches * Constants.HD_COUNTS_PER_INCH);
 
         for (int i = 0; i<4 && !caller.isStopRequested(); i++) {
             driveMotors[i].setTargetPosition(driveMtrTarget);
@@ -401,7 +399,7 @@ public class Robot {
         double distanceModifier = 1;
         double localizedInches = (speed > 0 ? inches : -inches);
 
-        driveMtrTarget = (int) (localizedInches * HD_COUNTS_PER_INCH);
+        driveMtrTarget = (int) (localizedInches * Constants.HD_COUNTS_PER_INCH);
 
         for (int i = 0; i<4 && !caller.isStopRequested(); i++) {
             if (i%2==0) {

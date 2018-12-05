@@ -1,12 +1,11 @@
-package org.firstinspires.ftc;
+package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.CustomGoldDetector;
+import org.firstinspires.ftc.teamcode.CustomGoldDetector;
 
 
 @TeleOp(name="Gold Detector Test", group="DogeCV")
